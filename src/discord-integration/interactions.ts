@@ -11,7 +11,7 @@ async function _interactions (request: Request, response: Response, next: NextFu
 
   // Handle verification requests
   if (type === InteractionType.PING) {
-    return response.send({ type: InteractionResponseType.PONG })
+    return response.json({ type: InteractionResponseType.PONG })
   }
 
   // Handle slash command requests
@@ -22,15 +22,6 @@ async function _interactions (request: Request, response: Response, next: NextFu
       if (command.command.name === name) {
         command.handler(request, response, next)
       }
-    }
-
-    if (name === 'ping') {
-      return response.send({
-        type:  InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: 'pong'
-        }
-      })
     }
   }
 }
