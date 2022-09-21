@@ -6,3 +6,4 @@ yarn-error.log
 .cert
 .cert/*.pem
 .env.local
+*.env
