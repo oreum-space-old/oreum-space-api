@@ -7,6 +7,8 @@ const commands: Array<InitCommand> = []
 async function _interactions (request: Request, response: Response, next: NextFunction) {
   const { type, data } = request.body
 
+  console.log(request.body)
+
   // Handle verification requests
   if (type === InteractionType.PING) {
     return response.send({ type: InteractionResponseType.PONG })
