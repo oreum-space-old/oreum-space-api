@@ -1,0 +1,27 @@
+{
+  "name": "oreum-space-api",
+  "version": "1.0.0",
+  "description": "unscripted",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oreum-space/oreum-space-api.git"
+  },
+  "keywords": [
+    "JS",
+    "expressjs",
+    "discord"
+  ],
+  "author": "DIdH9I",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oreum-space/oreum-space-api/issues"
+  },
+  "homepage": "https://github.com/oreum-space/oreum-space-api#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
