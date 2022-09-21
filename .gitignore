@@ -3,3 +3,5 @@ dist
 yarn.lock
 node_modules
 yarn-error.log
+.cert
+.env.local
