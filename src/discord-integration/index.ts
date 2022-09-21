@@ -14,7 +14,7 @@ const commands: Array<InitCommand> = [
 
 const router = Router()
   .use(express.json({ verify: verifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!) }))
-  .get(...(pingUtil('discord-integration')))
+  .get(...(pingUtil('/discord-integration')))
   .post(...interactions(commands))
 
 function checkDiscordEnvironments () {
