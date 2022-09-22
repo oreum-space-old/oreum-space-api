@@ -30,8 +30,11 @@ const creates: Array<AppCallback> = []
 const mounts: Array<AppCallback> = []
 const destroys: Array<AppCallback> = []
 
-function reg (this: App, { condition, endpoint, router, create, destroy, mount }: RegOptions): App {
+function reg (this: App, { condition, endpoint, router, beforeCreate, create, destroy, mount }: RegOptions): App {
   if (condition) {
+    if (beforeCreate) {
+      beforeCreate(this)
+    }
     if (endpoint && router) {
       this.use(endpoint, router)
     } else if (router) {
