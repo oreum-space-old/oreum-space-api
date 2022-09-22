@@ -16,7 +16,7 @@ export type RegOptions = {
   destroy?: AppCallback
 }
 
-interface App extends Express {
+export interface App extends Express {
   reg (this: App, options: RegOptions): App
   create (this: App, create: AppCallback): App
   mount (this: App, mount: AppCallback): App
