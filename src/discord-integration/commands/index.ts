@@ -65,35 +65,35 @@ export interface InitCommand {
   command: ApplicationCommand
 }
 
-const GUILDS_COMMAND_ENDPOINT = `applications/${ process.env.DISCORD_APPID }/guilds/${ process.env.DISCORD_GUILD }/commands`
+const GUILDS_COMMANDS_ENDPOINT = `applications/${ process.env.DISCORD_APPID }/guilds/${ process.env.DISCORD_GUILD }/commands`
 
 async function registerGuildCommand (command: ApplicationCommand) {
   try {
-    await DiscordRequest(GUILDS_COMMAND_ENDPOINT, {
+    await DiscordRequest(GUILDS_COMMANDS_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify(command)
     })
     process.log(`Command "${command.name}" [${command.id}] was registered!"`)
   } catch (e) {
-    process.error(`Failed to register "${command.name}" command`, e)
+    process.error(`Failed to register "${command.name}" [${command.id}] command`, e)
   }
 }
 
 async function unregisterGuildCommand (command: ApplicationCommand) {
   try {
-    await DiscordRequest(GUILDS_COMMAND_ENDPOINT + `/${command.id}`, {
+    await DiscordRequest(GUILDS_COMMANDS_ENDPOINT + `/${command.id}`, {
       method: 'DELETE'
     })
     process.log(`Command "${command.name} [${command.id}] was unregistered!"`)
   } catch (e) {
-    process.error(`Failed to unregister "${command.name}" command`, e)
+    process.error(`Failed to unregister "${command.name}" [${command.id}] command`, e)
   }
 }
 
 export default async function updateGuildCommands (commands: Array<InitCommand['command']>) {
   try {
     const
-      response = await DiscordRequest(GUILDS_COMMAND_ENDPOINT, { method: 'GET' }),
+      response = await DiscordRequest(GUILDS_COMMANDS_ENDPOINT, { method: 'GET' }),
       installedCommands: ApplicationCommands = await response.json(),
       toRegisterCommands: ApplicationCommands = commands.filter(command => {
         return !installedCommands.find(_ => _.id === command.id && _.name === command.name)
