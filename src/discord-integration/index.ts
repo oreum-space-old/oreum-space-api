@@ -4,6 +4,7 @@ import pingUtil from '../utils/ping'
 import { InitCommand, registerGuildCommands } from './commands'
 import test from './commands/test'
 import interactions from './interactions'
+import verifyDiscordRequest from './utils/verifyDiscordRequest'
 
 const discordEnabled = process.env.DISCORD_ENABLED?.toLowerCase() === 'true'
 
@@ -32,6 +33,10 @@ const discordIntegration: RegOptions = {
   condition: discordEnabled,
   endpoint: '/discord-integration',
   router,
+  beforeCreate (app) {
+    app.use(verifyDiscordRequest('/discord-integration/integration'))
+    return 'discord-integration'
+  },
   async mount () {
     checkDiscordEnvironments()
     registerGuildCommands(commands.map(_ => _.command))

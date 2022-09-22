@@ -6,8 +6,8 @@ import endpointNotFound from './utils/endpointNotFound'
 import ping from './utils/ping'
 
 app
-  .use(express.json())
   .reg(discordIntegration)
+  .use(express.json())
   .get(...ping())
   .use(endpointNotFound)
   .done()

@@ -1,7 +1,6 @@
 import { InteractionResponseType, InteractionType } from 'discord-interactions'
 import { NextFunction, Request, RequestHandler, Response } from 'express'
 import { InitCommand } from './commands'
-import verifyDiscordRequest from './utils/verifyDiscordRequest'
 
 const commands: Array<InitCommand> = []
 
@@ -27,7 +26,7 @@ async function _interactions (request: Request, response: Response, next: NextFu
   }
 }
 
-export default function (_commands: Array<InitCommand>): [string, RequestHandler, RequestHandler] {
+export default function (_commands: Array<InitCommand>): [string, RequestHandler] {
   commands.push(..._commands)
-  return ['/interactions', verifyDiscordRequest(), _interactions]
+  return ['/interactions', _interactions]
 }
