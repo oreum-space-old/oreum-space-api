@@ -6,6 +6,9 @@ import endpointNotFound from './utils/endpointNotFound'
 import ping from './utils/ping'
 
 app
+  .use((req) => {
+    console.log(req.baseUrl)
+  })
   .reg(discordIntegration)
   .use(express.json())
   .get(...ping())
