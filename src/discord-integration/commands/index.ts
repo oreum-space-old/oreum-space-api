@@ -70,10 +70,7 @@ const GUILDS_COMMANDS_ENDPOINT = `applications/${ process.env.DISCORD_APPID }/gu
 async function registerGuildCommand (command: ApplicationCommand) {
   const body = JSON.stringify(command)
   try {
-    await DiscordRequest(GUILDS_COMMANDS_ENDPOINT, {
-      method: 'POST',
-      body
-    })
+    await DiscordRequest(GUILDS_COMMANDS_ENDPOINT, { method: 'POST', body })
     process.log(`Command "${command.name}" [${command.id}] was registered!"`)
   } catch (e) {
     process.error(`Failed to register "${command.name}" [${command.id}] command`, `Body: ${body}`, e)
