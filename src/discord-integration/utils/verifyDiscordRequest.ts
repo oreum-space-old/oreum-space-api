@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express'
 
 function createVerifyDiscordRequest (clientKey: string) {
   return function (request: Request, response: Response, buffer: Buffer): void {
+    console.log(request.method)
     console.log(request.url)
     const signature = request.get('X-Signature-Ed25519')
     const timestamp = request.get('X-Signature-Timestamp')
