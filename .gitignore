@@ -3,7 +3,6 @@ dist
 yarn.lock
 node_modules
 yarn-error.log
-.cert
-.cert/*.pem
 .env.local
 *.env
+/.cert/
