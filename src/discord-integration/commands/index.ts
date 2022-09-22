@@ -68,14 +68,15 @@ export interface InitCommand {
 const GUILDS_COMMANDS_ENDPOINT = `applications/${ process.env.DISCORD_APPID }/guilds/${ process.env.DISCORD_GUILD }/commands`
 
 async function registerGuildCommand (command: ApplicationCommand) {
+  const body = JSON.stringify(command)
   try {
     await DiscordRequest(GUILDS_COMMANDS_ENDPOINT, {
       method: 'POST',
-      body: JSON.stringify(command)
+      body
     })
     process.log(`Command "${command.name}" [${command.id}] was registered!"`)
   } catch (e) {
-    process.error(`Failed to register "${command.name}" [${command.id}] command`, e)
+    process.error(`Failed to register "${command.name}" [${command.id}] command`, `Body: ${body}`, e)
   }
 }
 
