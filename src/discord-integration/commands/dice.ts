@@ -1,20 +1,20 @@
 import { InteractionResponseType } from 'discord-interactions'
 import { InitCommand } from './index'
 
-const random: InitCommand = {
+const dice: InitCommand = {
   handler (request, response) {
     response.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: `${Math.random().toFixed(4)}`
+        content: `${(Math.floor(Math.random() * 6) + 1)}`
       }
     })
   },
   command: {
-    name: 'random',
-    description: 'Returns random number',
+    name: 'dice',
+    description: 'Return random number (1 - 6)',
     type: 1
   }
 }
 
-export default random
+export default dice

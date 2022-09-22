@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { RegOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
 import updateGuildCommands, { InitCommand } from './commands'
-import random from './commands/random'
+import dice from './commands/random'
 import test from './commands/test'
 import interactions from './interactions'
 import verifyDiscordRequest from './utils/verifyDiscordRequest'
@@ -11,7 +11,7 @@ const discordEnabled = process.env.DISCORD_ENABLED?.toLowerCase() === 'true'
 
 const commands: Array<InitCommand> = [
   test,
-  random
+  dice
 ]
 
 const [interactionsEndpoint, interactionRequestHandler] = interactions(commands)
