@@ -1,3 +1,4 @@
+import './processLog'
 import express, { Express, Router } from 'express'
 import https from 'https'
 import certs from './certs'

@@ -18,8 +18,6 @@ export default async function (endpoint: string, options: RequestInit) {
 
   if (!res.ok) {
     const data = await res.json()
-    console.log(endpoint, res.status)
-    console.log(options.body)
     throw new Error(JSON.stringify(data))
   }
 

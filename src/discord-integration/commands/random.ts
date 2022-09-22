@@ -1,21 +1,21 @@
 import { InteractionResponseType } from 'discord-interactions'
 import { InitCommand } from './index'
 
-const test: InitCommand = {
+const random: InitCommand = {
   handler (request, response) {
     response.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: request.body.locale.startsWith('en') ? 'Hello world!' : 'Привет мир!'
+        content: `${Math.random().toFixed(4)}`
       }
     })
   },
   command: {
-    id: 0,
-    name: 'test',
-    description: 'Test connection with application',
+    id: 1,
+    name: 'random',
+    description: 'Returns random number',
     type: 1
   }
 }
 
-export default test
+export default random

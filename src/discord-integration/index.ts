@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { RegOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
-import { InitCommand, registerGuildCommands } from './commands'
+import updateGuildCommands, { InitCommand } from './commands'
+import random from './commands/random'
 import test from './commands/test'
 import interactions from './interactions'
 import verifyDiscordRequest from './utils/verifyDiscordRequest'
@@ -9,7 +10,8 @@ import verifyDiscordRequest from './utils/verifyDiscordRequest'
 const discordEnabled = process.env.DISCORD_ENABLED?.toLowerCase() === 'true'
 
 const commands: Array<InitCommand> = [
-  test
+  test,
+  random
 ]
 
 const [interactionsEndpoint, interactionRequestHandler] = interactions(commands)
@@ -26,7 +28,8 @@ function checkDiscordEnvironments () {
       !process.env.DISCORD_TOKEN ||
       !process.env.DISCORD_PUBLIC_KEY
     ) {
-      throw Error('DISCORD environments are not defined.')
+      process.error('DISCORD environments are not defined.')
+      process.exit()
     }
   }
 }
@@ -43,7 +46,7 @@ const discordIntegration: RegOptions = {
   },
   async mount () {
     checkDiscordEnvironments()
-    registerGuildCommands(commands.map(_ => _.command))
+    await updateGuildCommands(commands.map(_ => _.command))
     return discordIntegrationEndpoint
   }
 }
