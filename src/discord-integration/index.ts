@@ -1,4 +1,4 @@
-import express, { Router } from 'express'
+import { Router } from 'express'
 import { RegOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
 import { InitCommand, registerGuildCommands } from './commands'
@@ -13,8 +13,8 @@ const commands: Array<InitCommand> = [
 ]
 
 const router = Router()
-  .use(express.json({ verify: verifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!) }))
-  .get(...(pingUtil('discord-integration')))
+  .use(verifyDiscordRequest)
+  .get(...pingUtil('discord-integration'))
   .post(...interactions(commands))
 
 function checkDiscordEnvironments () {

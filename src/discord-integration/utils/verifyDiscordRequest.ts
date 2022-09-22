@@ -1,7 +1,7 @@
 import { verifyKey } from 'discord-interactions';
-import { Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 
-export default function (clientKey: string) {
+function createVerifyDiscordRequest (clientKey: string) {
   return function (req: Request, res: Response, buf: Buffer): void {
     const signature = req.get('X-Signature-Ed25519')
     const timestamp = req.get('X-Signature-Timestamp')
@@ -13,4 +13,8 @@ export default function (clientKey: string) {
       throw new Error('Bad request signature')
     }
   }
+}
+
+export default function () {
+  return express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!) })
 }
