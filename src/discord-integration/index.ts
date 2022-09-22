@@ -4,7 +4,7 @@ import pingUtil from '../utils/ping'
 import { InitCommand, registerGuildCommands } from './commands'
 import test from './commands/test'
 import interactions from './interactions'
-// import verifyDiscordRequest from './utils/verifyDiscordRequest'
+import verifyDiscordRequest from './utils/verifyDiscordRequest'
 
 const discordEnabled = process.env.DISCORD_ENABLED?.toLowerCase() === 'true'
 
@@ -13,7 +13,7 @@ const commands: Array<InitCommand> = [
 ]
 
 const router = Router()
-  // .use(verifyDiscordRequest)
+  .use(verifyDiscordRequest())
   .get(...pingUtil('discord-integration'))
   .post(...interactions(commands))
 
