@@ -7,7 +7,7 @@ import ping from './utils/ping'
 
 app
   .use((req, res, next) => {
-    console.log(req.baseUrl)
+    console.log(req.rawHeaders)
     next()
   })
   .reg(discordIntegration)
