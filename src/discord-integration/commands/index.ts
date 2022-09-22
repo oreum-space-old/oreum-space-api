@@ -99,14 +99,16 @@ export default async function updateGuildCommands (commands: Array<InitCommand['
       toUnregisterCommands: ApplicationCommands = installedCommands.filter(command => {
         return !commands.find(_ => _.name === command.name)
       }),
+      alreadyRegisteredCommandNames = commands.filter(_ => !toRegisterCommands.includes(_)).map(_ => _.name),
       registeringCommands = new Array<Promise<void>>(toRegisterCommands.length),
       unregisteringCommands = new Array<Promise<void>>(toUnregisterCommands.length)
 
-    process.info(`Registering commands: ${toRegisterCommands.map(_ => _.name).join()}`)
+    process.info(`Already registered commands: [${alreadyRegisteredCommandNames.join(', ')}]`)
+    process.info(`Registering commands: [${toRegisterCommands.map(_ => _.name).join(', ')}]`)
     for (const command of toRegisterCommands) {
       registeringCommands.push(registerGuildCommand(command))
     }
-    process.info(`Unregistering commands: ${toUnregisterCommands.map(_ => _.name).join()}`)
+    process.info(`Unregistering commands: [${toUnregisterCommands.map(_ => _.name).join(', ')}]`)
     for (const command of toUnregisterCommands) {
       unregisteringCommands.push(unregisterGuildCommand(command))
     }
