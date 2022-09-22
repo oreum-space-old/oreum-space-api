@@ -34,7 +34,7 @@ const discordIntegration: RegOptions = {
   endpoint: '/discord-integration',
   router,
   beforeCreate (app) {
-    app.use(verifyDiscordRequest('/discord-integration/integration'))
+    app.use(verifyDiscordRequest('/discord-integration/integrations'))
     return 'discord-integration'
   },
   async mount () {
