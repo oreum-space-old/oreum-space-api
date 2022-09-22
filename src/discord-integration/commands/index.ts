@@ -65,7 +65,7 @@ export interface InitCommand {
   command: ApplicationCommand
 }
 
-const GUILDS_COMMANDS_ENDPOINT = `applications/${ process.env.DISCORD_APPID }/guilds/${ process.env.DISCORD_GUILD }/commands`
+const GUILDS_COMMANDS_ENDPOINT = `/applications/${ process.env.DISCORD_APPID }/guilds/${ process.env.DISCORD_GUILD }/commands`
 
 async function registerGuildCommand (command: ApplicationCommand) {
   const body = JSON.stringify(command)
