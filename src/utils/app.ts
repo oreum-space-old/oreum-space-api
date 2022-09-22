@@ -50,17 +50,17 @@ function reg (this: App, { condition, endpoint, router, create, destroy, mount }
 }
 
 function create (this: App, create: AppCallback) {
-  creates.push(create)
+  creates.push(create.bind(this))
   return app
 }
 
 function mount (this: App, mount: AppCallback) {
-  mounts.push(mount)
+  mounts.push(mount.bind(this))
   return app
 }
 
 function destroy (this: App, destroy: AppCallback) {
-  destroys.push(destroy)
+  destroys.push(destroy.bind(this))
   return app
 }
 
