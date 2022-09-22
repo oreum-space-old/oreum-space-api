@@ -12,9 +12,11 @@ const commands: Array<InitCommand> = [
   test
 ]
 
+const [interactionsEndpoint, interactionRequestHandler] = interactions(commands)
+
 const router = Router()
   .get(...pingUtil('discord-integration'))
-  .post(...interactions(commands))
+  .post(interactionsEndpoint, interactionRequestHandler)
 
 function checkDiscordEnvironments () {
   if (discordEnabled) {
@@ -29,18 +31,20 @@ function checkDiscordEnvironments () {
   }
 }
 
+const discordIntegrationEndpoint = '/discord-integration'
+
 const discordIntegration: RegOptions = {
   condition: discordEnabled,
-  endpoint: '/discord-integration',
+  endpoint: discordIntegrationEndpoint,
   router,
   beforeCreate (app) {
-    app.use(verifyDiscordRequest('/discord-integration/interactions'))
-    return 'discord-integration'
+    app.use(verifyDiscordRequest(interactionsEndpoint))
+    return discordIntegrationEndpoint
   },
   async mount () {
     checkDiscordEnvironments()
     registerGuildCommands(commands.map(_ => _.command))
-    return 'discord-integration'
+    return discordIntegrationEndpoint
   }
 }
 
