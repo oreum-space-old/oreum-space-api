@@ -7,9 +7,12 @@ import endpointNotFound from './utils/endpointNotFound'
 import ping from './utils/ping'
 
 app
+  .use(verifyDiscordRequest())
   .use(express.json())
-  .use(verifyDiscordRequest).reg(discordIntegration)
+  .reg(discordIntegration)
   .get(...ping())
   .use(endpointNotFound)
   .done()
-  .then()
+  .then(() => {
+    console.log('done')
+  })

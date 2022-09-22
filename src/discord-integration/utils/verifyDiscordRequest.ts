@@ -1,4 +1,4 @@
-import { verifyKey } from 'discord-interactions';
+import { verifyKey } from 'discord-interactions'
 import express, { Request, Response } from 'express'
 
 function createVerifyDiscordRequest (clientKey: string) {
