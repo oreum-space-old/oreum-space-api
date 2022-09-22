@@ -34,7 +34,7 @@ function createLog (level: Level) {
         process.module || 'null'
       } | ${
         process.action || 'null'
-      } ] ${outputs.join(' ')}`
+      } ] ${outputs.join(' ')}\n`
     )
   }
 }
