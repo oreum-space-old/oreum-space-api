@@ -10,6 +10,7 @@ type AppCallback = (app: App) => string | Promise<string>
 export type RegOptions = {
   condition: boolean,
   endpoint?: string,
+  beforeCreate?: AppCallback,
   router?: Router,
   create?: AppCallback,
   mount?: AppCallback,

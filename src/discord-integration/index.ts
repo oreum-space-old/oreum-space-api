@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { App, RegOptions } from '../utils/app'
+import { RegOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
 import { InitCommand, registerGuildCommands } from './commands'
 import test from './commands/test'
@@ -33,8 +33,11 @@ const discordIntegration: RegOptions = {
   condition: discordEnabled,
   endpoint: '/discord-integration',
   router,
-  async mount (this: App) {
-    this.use(verifyDiscordRequest('/discord-integration/interaction'))
+  beforeCreate (app) {
+    app.use(verifyDiscordRequest('/discord-integration/interaction'))
+    return 'discord-integration'
+  },
+  async mount () {
     checkDiscordEnvironments()
     registerGuildCommands(commands.map(_ => _.command))
     return 'discord-integration'
