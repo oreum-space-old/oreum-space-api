@@ -11,7 +11,6 @@ const random: InitCommand = {
     })
   },
   command: {
-    id: 1,
     name: 'random',
     description: 'Returns random number',
     type: 1

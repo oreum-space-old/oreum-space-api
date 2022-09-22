@@ -12,7 +12,7 @@ enum ApplicationCommandTypes {
 }
 
 interface ApplicationCommand {
-  id: ApplicationCommandTypes,
+  id?: ApplicationCommandTypes,
   type?: number,
   name: string,
   name_localization?: LocalesDictionary
@@ -97,10 +97,10 @@ export default async function updateGuildCommands (commands: Array<InitCommand['
       response = await DiscordRequest(GUILDS_COMMANDS_ENDPOINT, { method: 'GET' }),
       installedCommands: ApplicationCommands = await response.json(),
       toRegisterCommands: ApplicationCommands = commands.filter(command => {
-        return !installedCommands.find(_ => _.id === command.id && _.name === command.name)
+        return !installedCommands.find(_ => _.name === command.name)
       }),
       toUnregisterCommands: ApplicationCommands = installedCommands.filter(command => {
-        return !commands.find(_ => _.id === command.id && _.name === command.name)
+        return !commands.find(_ => _.name === command.name)
       }),
       registeringCommands = new Array<Promise<void>>(toRegisterCommands.length),
       unregisteringCommands = new Array<Promise<void>>(toUnregisterCommands.length)

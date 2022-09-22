@@ -11,7 +11,6 @@ const test: InitCommand = {
     })
   },
   command: {
-    id: 0,
     name: 'test',
     description: 'Test connection with application',
     type: 1
