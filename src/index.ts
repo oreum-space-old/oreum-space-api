@@ -1,20 +1,25 @@
 import 'dotenv/config'
-import express from 'express'
-import discordIntegration from './discord-integration'
+import cookieParser from 'cookie-parser'
+import { json } from 'express'
+import api from './api'
+import application from './application'
+import discord from './discord'
+import mongoose from './mongoose'
 import app from './utils/app'
-import endpointNotFound from './utils/endpointNotFound'
+import appMounted from './utils/app-mounted'
+import errorMiddleware from './utils/middlewares/error-middleware'
 import ping from './utils/ping'
+import useCors from './utils/useCors'
 
 app
-  .use((req, res, next) => {
-    console.log(req.rawHeaders)
-    next()
-  })
-  .reg(discordIntegration)
-  .use(express.json())
-  .get(...ping())
-  .use(endpointNotFound)
+  .use(json())          // JSON
+  .use(cookieParser())  // Cookie
+  .use(useCors)         // Cors
+  .get(...ping())       // /path
+  .reg(api)             // /api
+  .reg(discord)         // /discord
+  .reg(application)     // /
+  .reg(mongoose)        // connect to mongodb
+  .use(errorMiddleware) // errors middleware
   .done()
-  .then(() => {
-    console.log('done')
-  })
+  .then(appMounted)

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { RegOptions } from '../utils/app'
+import { ModuleOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
 import updateGuildCommands, { InitCommand } from './commands'
 import dice from './commands/dice'
@@ -17,7 +17,7 @@ const commands: Array<InitCommand> = [
 const [interactionsEndpoint, interactionRequestHandler] = interactions(commands)
 
 const router = Router()
-  .get(...pingUtil('discord-integration'))
+  .get(...pingUtil('discord'))
   .post(interactionsEndpoint, interactionRequestHandler)
 
 function checkDiscordEnvironments () {
@@ -34,21 +34,24 @@ function checkDiscordEnvironments () {
   }
 }
 
-const discordIntegrationEndpoint = '/discord-integration'
+const discordEndpoint = '/discord'
 
-const discordIntegration: RegOptions = {
+const discord: ModuleOptions = {
+  module: module.filename,
   condition: discordEnabled,
-  endpoint: discordIntegrationEndpoint,
+  endpoint: discordEndpoint,
   router,
   beforeCreate (app) {
+    process.setModule(discord.module)
     app.use(verifyDiscordRequest(interactionsEndpoint))
-    return discordIntegrationEndpoint
+    return discord
   },
   async mount () {
+    process.setModule(discord.module).info('Mounting...')
     checkDiscordEnvironments()
     await updateGuildCommands(commands.map(_ => _.command))
-    return discordIntegrationEndpoint
+    return discord
   }
 }
 
-export default discordIntegration
+export default discord

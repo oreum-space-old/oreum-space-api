@@ -1,15 +1,16 @@
 import './processLog'
 import express, { Express, Router } from 'express'
 import https from 'https'
-import certs from './certs'
+import loadCert from './load-cert'
 import checkEnvironments from './checkEnvironments'
 
 const logs = process.env.LOGS?.toLowerCase() === 'true'
 
-type AppCallback = (app: App) => string | Promise<string>
+type AppCallback = (app: App) => ModuleOptions | Promise<ModuleOptions>
 
-export type RegOptions = {
-  condition: boolean,
+export type ModuleOptions = {
+  module: string
+  condition?: boolean,
   endpoint?: string,
   beforeCreate?: AppCallback,
   router?: Router,
@@ -19,7 +20,7 @@ export type RegOptions = {
 }
 
 export interface App extends Express {
-  reg (this: App, options: RegOptions): App
+  reg (this: App, options: ModuleOptions): App
   create (this: App, create: AppCallback): App
   mount (this: App, mount: AppCallback): App
   destroy (this: App, destroy: AppCallback): App
@@ -31,8 +32,8 @@ const creates: Array<AppCallback> = []
 const mounts: Array<AppCallback> = []
 const destroys: Array<AppCallback> = []
 
-function reg (this: App, { condition, endpoint, router, beforeCreate, create, destroy, mount }: RegOptions): App {
-  if (condition) {
+function reg (this: App, { condition, endpoint, router, beforeCreate, create, destroy, mount }: ModuleOptions): App {
+  if (condition === undefined || condition) {
     if (beforeCreate) {
       beforeCreate(this)
     }
@@ -69,27 +70,37 @@ function destroy (this: App, destroy: AppCallback) {
   return app
 }
 
+function infoStart () {
+  process
+    .setModule(module.filename)
+    .info(
+      'Server start successful.',
+      `https://localhost:${ process.env.PORT }`
+    )
+}
+
 async function done (this: App) {
   for (const create of creates) {
-    const name = await create(app)
+    const options = await create(app)
     if (logs) {
-      console.log(`[Created] <${name}>`)
+      process.setModule(options.module).log(`Creating!`)
     }
   }
+
   try {
     checkEnvironments()
-    https
-      .createServer(certs(), app)
-      .listen(
-        process.env.PORT, () => console.log(`Server start successful.\n` + `https://localhost:${ process.env.PORT }`))
+    await https
+      .createServer(loadCert(), app)
+      .listen(process.env.PORT, infoStart)
   } catch (error) {
-    console.error(error)
+    process.error(error)
+    process.exit(128)
   }
 
   for (const mount of mounts) {
-    const name = await mount(app)
+    const options = await mount(app)
     if (logs) {
-      console.log(`[Mounted] <${name}>`)
+      process.setModule(options.module).info('Successfully mounted!')
     }
   }
   return app
