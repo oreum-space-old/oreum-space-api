@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Router } from 'express'
 import { ModuleOptions } from '../utils/app'
 
 const APPLICATION_ENDPOINT = '/'
@@ -9,11 +9,15 @@ if (!APPLICATION_DIST_PATH || !SKINS_PATH) {
   throw new Error('Application path is not defined!')
 }
 
+const skin_router = Router()
+
+skin_router.use(express.static(SKINS_PATH))
+
 const application: ModuleOptions = {
   module: module.filename,
   endpoint: APPLICATION_ENDPOINT,
   beforeCreate (app) {
-    app.get('/skins', express.static(SKINS_PATH))
+    // app.get('/skins', express.static(SKINS_PATH))
     app.use(express.static(APPLICATION_DIST_PATH))
     app.get('/*', (request, response) => {
       response.sendFile(APPLICATION_DIST_PATH + '/index.html')
