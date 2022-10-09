@@ -13,7 +13,7 @@ const application: ModuleOptions = {
   module: module.filename,
   endpoint: APPLICATION_ENDPOINT,
   beforeCreate (app) {
-    app.get('skins', express.static(SKINS_PATH))
+    app.get('/skins', express.static(SKINS_PATH))
     app.use(express.static(APPLICATION_DIST_PATH))
     app.get('/*', (request, response) => {
       response.sendFile(APPLICATION_DIST_PATH + '/index.html')
