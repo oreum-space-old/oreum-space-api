@@ -4,4 +4,11 @@ if (!process.env.ORIGIN) {
   throw new Error('ORIGIN is not defined.')
 }
 
-export default cors({ credentials: true, origin: process.env.ORIGIN })
+const origins = process.env.ORIGIN.split(' ')
+
+export default cors({
+  credentials: true,
+  origin: origins.length === 1 ? process.env.ORIGIN : () => {
+
+  }
+})

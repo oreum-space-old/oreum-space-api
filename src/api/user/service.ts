@@ -208,6 +208,20 @@ export default new class UserService {
   }
 
   async validateUsername (username: string) {
+    const error = {
+      type: 'field',
+      field: 'username',
+      value: username
+    }
+    if (username.length < 3) {
+      throw ApiError.BadRequest('username-short', [{ ...error, text: 'username-short' }])
+    }
+    if (username.length > 16) {
+      throw ApiError.BadRequest('username-long', [{ ...error, text: 'username-long' }])
+    }
+    if (!/^[a-zA-ZА-Яа-я\d_]{0,16}$/.test(username)) {
+      throw ApiError.BadRequest('username-invalid', [{ ...error, text: 'username-invalid' }])
+    }
     return {
       username,
       taken: !!(await UserModel.findOne({
@@ -219,6 +233,14 @@ export default new class UserService {
   }
 
   async validateEmail (email: string) {
+    const error = {
+      type: 'field',
+      field: 'email',
+      value: email
+    }
+    if (!/^[a-zA-Z\d.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z\d](?:[a-zA-Z\d-]{0,61}[a-zA-Z\d])?(?:\.[a-zA-Z\d](?:[a-zA-Z\d-]{0,61}[a-zA-Z\d])?)*$/.test(email)) {
+      throw ApiError.BadRequest('email-invalid', [{ ...error, text: 'email-invalid' }])
+    }
     return { email, taken: !!(await UserModel.findOne({ email })) }
   }
 
