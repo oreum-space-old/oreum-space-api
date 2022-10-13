@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express'
 
 function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
   return function (request: Request, response: Response, buffer: Buffer): void {
+    console.log(endpoint, request.url)
     if (request.url.includes(endpoint)) {
       console.log(`[${request.method}] ${request.url} - Verifying Discord Request`)
 
