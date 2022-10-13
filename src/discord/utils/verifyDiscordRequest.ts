@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 
 function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
   return function (request: Request, response: Response, buffer: Buffer): void {
-    if (request.url.endsWith(endpoint) && request.method === 'POST') {
+    if (request.url.includes(endpoint)) {
       console.log(`[${request.method}] ${request.url} - Verifying Discord Request`)
 
       const signature = request.get('X-Signature-Ed25519')

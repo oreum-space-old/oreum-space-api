@@ -43,7 +43,7 @@ const discord: ModuleOptions = {
   router,
   beforeCreate (app) {
     process.setModule(discord.module)
-    app.use(verifyDiscordRequest(interactionsEndpoint))
+    app.use(verifyDiscordRequest(discordEndpoint + interactionsEndpoint))
     return discord
   },
   async mount () {
