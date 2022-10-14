@@ -14,7 +14,7 @@ export default function (error: ApiError | Error, request: Request, response: Re
   }
 
   process.module = 'error-middleware'
-  process.error(error)
+  process.error(error.message)
   return response
     .status(500)
     .json({

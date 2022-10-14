@@ -9,8 +9,7 @@ export function createVerifyDiscordRequest (clientKey: string, endpoint: string)
 
       const signature = request.get('X-Signature-Ed25519')
       const timestamp = request.get('X-Signature-Timestamp')
-      process.log('signature:', signature)
-      process.log('timestamp:', timestamp)
+      process.log('\nsignature:', signature, '\ntimestamp:', timestamp)
 
       const isValidRequest = verifyKey(buffer, signature!, timestamp!, clientKey)
       if (!isValidRequest) {
