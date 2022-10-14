@@ -17,7 +17,6 @@ const commands: Array<InitCommand> = [
 const [interactionsEndpoint, interactionRequestHandler] = interactions(commands)
 
 const router = Router()
-  .use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/integrations') }))
   .get(...pingUtil('discord'))
   .post(interactionsEndpoint, interactionRequestHandler)
 
@@ -42,7 +41,8 @@ const discord: ModuleOptions = {
   condition: discordEnabled,
   endpoint: discordEndpoint,
   router,
-  beforeCreate () {
+  beforeCreate (app) {
+    app.use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/integrations') }))
     process.setModule(discord.module)
     return discord
   },
