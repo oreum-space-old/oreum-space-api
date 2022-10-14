@@ -2,7 +2,7 @@ import { verifyKey } from 'discord-interactions'
 import { Request, Response } from 'express'
 
 export function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
-  return function (request: Request, response: Response, buffer: Buffer): void {
+  return async function (request: Request, response: Response, buffer: Buffer): Promise<void> {
     process.setModule('discord').info('verifyDiscordRequest', endpoint, request.url)
     if (request.url.includes(endpoint)) {
       process.setModule('discord').log(`[${request.method}] ${request.url} - Verifying Discord Request`)
