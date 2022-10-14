@@ -1,10 +1,11 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 import { ModuleOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
 import updateGuildCommands, { InitCommand } from './commands'
 import dice from './commands/dice'
 import test from './commands/test'
 import interactions from './interactions'
+import { createVerifyDiscordRequest } from './utils/verifyDiscordRequest'
 
 const discordEnabled = process.env.DISCORD_ENABLED?.toLowerCase() === 'true'
 
@@ -16,6 +17,7 @@ const commands: Array<InitCommand> = [
 const [interactionsEndpoint, interactionRequestHandler] = interactions(commands)
 
 const router = Router()
+  .use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/integrations') }))
   .get(...pingUtil('discord'))
   .post(interactionsEndpoint, interactionRequestHandler)
 
