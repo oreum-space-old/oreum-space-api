@@ -1,7 +1,7 @@
 import { verifyKey } from 'discord-interactions'
-import express, { Request, Response } from 'express'
+import { Request, Response } from 'express'
 
-function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
+export function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
   return function (request: Request, response: Response, buffer: Buffer): void {
     process.setModule('discord').info('verifyDiscordRequest', endpoint, request.url)
     if (request.url.includes(endpoint)) {
@@ -22,9 +22,4 @@ function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
       process.setModule('discord').log(`[${request.method}] ${request.url} - not discord url`)
     }
   }
-}
-
-export default function (endpoint: string) {
-  process.setModule('discord').info(`createVerifyDiscordRequest registered at "${endpoint}" endpoint!`)
-  return express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, endpoint) })
 }

@@ -1,11 +1,11 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 import { ModuleOptions } from '../utils/app'
 import pingUtil from '../utils/ping'
 import updateGuildCommands, { InitCommand } from './commands'
 import dice from './commands/dice'
 import test from './commands/test'
 import interactions from './interactions'
-import verifyDiscordRequest from './utils/verifyDiscordRequest'
+import { createVerifyDiscordRequest } from './utils/verifyDiscordRequest'
 
 const discordEnabled = process.env.DISCORD_ENABLED?.toLowerCase() === 'true'
 
@@ -43,7 +43,7 @@ const discord: ModuleOptions = {
   router,
   beforeCreate (app) {
     process.setModule(discord.module)
-    app.use(verifyDiscordRequest(discordEndpoint + interactionsEndpoint))
+    app.use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/integrations') }))
     return discord
   },
   async mount () {
