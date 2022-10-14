@@ -13,7 +13,7 @@ import ping from './utils/ping'
 // import useCors from './utils/useCors'
 
 app
-  .use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/integrations') }))
+  .use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/interactions') }))
   .use(json())          // JSON
   .use(cookieParser())  // Cookie
   // .use(useCors)         // Cors
