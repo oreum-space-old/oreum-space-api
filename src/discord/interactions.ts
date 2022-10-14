@@ -12,7 +12,7 @@ async function _interactions (request: Request, response: Response, next: NextFu
 
   // Handle verification requests
   if (type === InteractionType.PING) {
-    return response.json({ type: InteractionResponseType.PONG })
+    return response.send({ type: InteractionResponseType.PONG })
   }
 
   // Handle slash command requests
