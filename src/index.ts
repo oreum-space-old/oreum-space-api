@@ -9,12 +9,12 @@ import app from './utils/app'
 import appMounted from './utils/app-mounted'
 import errorMiddleware from './utils/middlewares/error-middleware'
 import ping from './utils/ping'
-import useCors from './utils/useCors'
+// import useCors from './utils/useCors'
 
 app
   .use(json())          // JSON
   .use(cookieParser())  // Cookie
-  .use(useCors)         // Cors
+  // .use(useCors)         // Cors
   .get(...ping())       // /path
   .reg(api)             // /api
   .reg(discord)         // /discord
