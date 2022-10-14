@@ -43,7 +43,7 @@ const discord: ModuleOptions = {
   router,
   beforeCreate (app) {
     app.use(express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, '/discord/integrations') }))
-    process.setModule(discord.module)
+    process.setModule(discord.module).info('beforeCreate')
     return discord
   },
   async mount () {

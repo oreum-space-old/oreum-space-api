@@ -5,7 +5,6 @@ import { InitCommand } from './commands'
 const commands: Array<InitCommand> = []
 
 async function _interactions (request: Request, response: Response, next: NextFunction) {
-
   const { type, data } = request.body
 
   process.setModule('discord').info('_interactions', request.body)
