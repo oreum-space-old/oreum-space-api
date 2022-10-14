@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 
 function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
   return function (request: Request, response: Response, buffer: Buffer): void {
-    console.log(endpoint, request.url)
+    process.setModule('discord').info('verifyDiscordRequest', endpoint, request.url)
     if (request.url.includes(endpoint)) {
       console.log(`[${request.method}] ${request.url} - Verifying Discord Request`)
 
@@ -25,5 +25,6 @@ function createVerifyDiscordRequest (clientKey: string, endpoint: string) {
 }
 
 export default function (endpoint: string) {
+  process.setModule('discord').info('createVerifyDiscordRequest registered')
   return express.json({ verify: createVerifyDiscordRequest(process.env.DISCORD_PUBLIC_KEY!, endpoint) })
 }
